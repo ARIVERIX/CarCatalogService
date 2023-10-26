@@ -31,7 +31,6 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserById(UUID id) {
         User user = userRepository.findById(id).orElse(null);
         if (user == null) {
-            // Handle the case where the user with the given ID is not found
             return null;
         }
         return modelMapper.map(user, UserDTO.class);
@@ -59,7 +58,6 @@ public class UserServiceImpl implements UserService {
     public UserDTO updateUser(UUID id, UserDTO userDTO) {
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser == null) {
-            // Handle the case where the user with the given ID is not found
             return null;
         }
         modelMapper.map(userDTO, existingUser);

@@ -26,7 +26,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     public UserRoleDTO getUserRoleById(UUID id) {
         UserRole userRole = userRoleRepository.findById(id).orElse(null);
         if (userRole == null) {
-            // Handle the case where the user role with the given ID is not found
+
             return null;
         }
         return modelMapper.map(userRole, UserRoleDTO.class);
@@ -51,7 +51,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     public UserRoleDTO updateUserRole(UUID id, UserRoleDTO userRoleDTO) {
         UserRole existingUserRole = userRoleRepository.findById(id).orElse(null);
         if (existingUserRole == null) {
-            // Handle the case where the user role with the given ID is not found
+
             return null;
         }
         modelMapper.map(userRoleDTO, existingUserRole);

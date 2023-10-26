@@ -28,7 +28,7 @@ public class OfferServiceImpl implements OfferService {
     public OfferDTO getOfferById(UUID id) {
         Offer offer = offerRepository.findById(id).orElse(null);
         if (offer == null) {
-            // Handle the case where the offer with the given ID is not found
+
             return null;
         }
         return modelMapper.map(offer, OfferDTO.class);
@@ -46,12 +46,12 @@ public class OfferServiceImpl implements OfferService {
     public OfferDTO createOffer(OfferDTO offerDTO, UUID modelId, UUID sellerId) {
         Offer offer = modelMapper.map(offerDTO, Offer.class);
 
-        // Set the model for the offer
+
         Model model = new Model();
         model.setId(modelId);
         offer.setModel(model);
 
-        // Set the seller for the offer
+
         User seller = new User();
         seller.setId(sellerId);
         offer.setSeller(seller);
@@ -64,7 +64,7 @@ public class OfferServiceImpl implements OfferService {
     public OfferDTO updateOffer(UUID id, OfferDTO offerDTO) {
         Offer existingOffer = offerRepository.findById(id).orElse(null);
         if (existingOffer == null) {
-            // Handle the case where the offer with the given ID is not found
+
             return null;
         }
 

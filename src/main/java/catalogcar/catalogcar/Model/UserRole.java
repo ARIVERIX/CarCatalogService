@@ -12,7 +12,7 @@ public class UserRole {
     @Id
     @GeneratedValue
     private UUID id;
-    @Convert(converter = RoleAttributeConverter.class)
+    @Convert(converter = RoleAttributeConverter.class) //Преобразования значений перечисления Role в базе данных с использованием конвертера
     private Role role;
     public enum Role{
         USER(0), ADMIN(10);

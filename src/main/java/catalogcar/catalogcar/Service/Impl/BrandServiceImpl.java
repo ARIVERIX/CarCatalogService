@@ -26,7 +26,6 @@ public class BrandServiceImpl implements BrandService {
     public BrandDTO getBrandById(UUID id) {
         Brand brand = brandRepository.findById(id).orElse(null);
         if (brand == null) {
-            // Handle the case where the brand with the given ID is not found
             return null;
         }
         return modelMapper.map(brand, BrandDTO.class);
@@ -51,7 +50,6 @@ public class BrandServiceImpl implements BrandService {
     public BrandDTO updateBrand(UUID id, BrandDTO brandDTO) {
         Brand existingBrand = brandRepository.findById(id).orElse(null);
         if (existingBrand == null) {
-            // Handle the case where the brand with the given ID is not found
             return null;
         }
         modelMapper.map(brandDTO, existingBrand);

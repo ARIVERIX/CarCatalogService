@@ -56,3 +56,15 @@ public class MappingService {
         return modelMapper.map(userRoleDto, UserRole.class);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+//•	Методы внутри класса MappingService используют этот ModelMapper для выполнения конвертации между модельными объектами и их DTO-представлениями. Модельный объект преобразуется в DTO и наоборот.

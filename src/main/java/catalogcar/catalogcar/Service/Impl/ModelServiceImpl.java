@@ -27,7 +27,6 @@ public class ModelServiceImpl implements ModelService {
     public ModelDTO getModelById(UUID id) {
         Model model = modelRepository.findById(id).orElse(null);
         if (model == null) {
-            // Handle the case where the model with the given ID is not found
             return null;
         }
         return modelMapper.map(model, ModelDTO.class);
@@ -45,7 +44,7 @@ public class ModelServiceImpl implements ModelService {
     public ModelDTO createModel(ModelDTO modelDTO, UUID brandId) {
         Model model = modelMapper.map(modelDTO, Model.class);
 
-        // Set the brand for the model
+
         Brand brand = new Brand();
         brand.setId(brandId);
         model.setBrand(brand);
@@ -58,7 +57,6 @@ public class ModelServiceImpl implements ModelService {
     public ModelDTO updateModel(UUID id, ModelDTO modelDTO) {
         Model existingModel = modelRepository.findById(id).orElse(null);
         if (existingModel == null) {
-            // Handle the case where the model with the given ID is not found
             return null;
         }
         modelMapper.map(modelDTO, existingModel);
