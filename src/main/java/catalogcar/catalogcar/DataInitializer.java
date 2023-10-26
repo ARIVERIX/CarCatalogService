@@ -72,6 +72,7 @@ public class DataInitializer implements CommandLineRunner {
         userOne.setModified(LocalDateTime.now());
         userOne.setImageUrl("https://example.com/users/userDenil.jpg");
         roleUser.setRole(String.valueOf(UserRole.Role.USER));
+        userOne.setRole("USER");
         userOne = userService.createUser(userOne);
 
         UserDTO userTwo = new UserDTO();
@@ -84,6 +85,7 @@ public class DataInitializer implements CommandLineRunner {
         userTwo.setModified(LocalDateTime.now());
         userTwo.setImageUrl("https://example.com/users/userMatvei.jpg");
         roleAdmin.setRole(String.valueOf(UserRole.Role.ADMIN));
+        userTwo.setRole("ADMIN");
         userTwo = userService.createUser(userTwo);
 
         // Создание моделей автомобилей

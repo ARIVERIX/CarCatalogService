@@ -2,8 +2,11 @@ package catalogcar.catalogcar.Service.Impl;
 
 import catalogcar.catalogcar.DTO.UserDTO;
 import catalogcar.catalogcar.Model.User;
+import catalogcar.catalogcar.Model.UserRole;
 import catalogcar.catalogcar.Repository.UserRepository;
+import catalogcar.catalogcar.Repository.UserRoleRepository;
 import catalogcar.catalogcar.Service.UserService;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +19,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final UserRoleRepository userRoleRepository;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, UserRoleRepository userRoleRepository) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.userRoleRepository = userRoleRepository;
     }
 
     @Override
@@ -41,8 +46,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO createUser(UserDTO userDTO) {
         User user = modelMapper.map(userDTO, User.class);
+        UserRole role = userRoleRepository.findByRole(UserRole.Role.valueOf(userDTO.getRole()));
+        user.setUserRole(role);
         User savedUser = userRepository.save(user);
         return modelMapper.map(savedUser, UserDTO.class);
     }

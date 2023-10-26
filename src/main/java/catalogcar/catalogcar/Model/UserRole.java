@@ -1,9 +1,6 @@
 package catalogcar.catalogcar.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.UUID;
@@ -15,9 +12,15 @@ public class UserRole {
     @Id
     @GeneratedValue
     private UUID id;
+    @Convert(converter = RoleAttributeConverter.class)
     private Role role;
     public enum Role{
-        USER, ADMIN
+        USER(0), ADMIN(10);
+        int ordinate;
+
+        Role(int ordinate) {
+            this.ordinate = ordinate;
+        }
     }
 }
 
