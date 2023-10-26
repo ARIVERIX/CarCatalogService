@@ -9,10 +9,7 @@ import java.util.UUID;
 @Entity
 @Data
 @Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class User extends BaseEntity{
     private String username;
     private String password;
     private String firstName;
@@ -22,6 +19,4 @@ public class User {
     @JoinColumn(name = "role_id")
     private UserRole UserRole;
     private String imageUrl;
-    private LocalDateTime created;
-    private LocalDateTime modified;
 }

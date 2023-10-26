@@ -1,30 +1,40 @@
 package catalogcar.catalogcar.Model;
 
+import catalogcar.catalogcar.Model.Brand;
+import catalogcar.catalogcar.Model.Offer;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
-
 @Data
 @Entity
 @Table(name = "models")
-public class Model {
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class Model extends BaseEntity {
     private String name;
+
+    @Enumerated(EnumType.STRING) // Указываем, что хотим хранить значение как строку
     private Category category;
+
     public enum Category {
-        CAR, BUSS, TRUCK, MOTORCYCLE
+        CAR("машина"),
+        BUSS("автобус"),
+        TRUCK("грузовик"),
+        MOTORCYCLE("мотоцикл");
+
+        private final String displayName;
+
+        Category(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
     }
 
     private String imageUrl;
     private Integer startYear;
     private Integer endYear;
-    private LocalDateTime created;
-    private LocalDateTime modified;
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
