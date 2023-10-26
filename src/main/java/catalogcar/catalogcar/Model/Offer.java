@@ -18,10 +18,10 @@ public class Offer extends BaseEntity {
     private Engine engine;
 
     public enum Engine {
-        GASOLINE("Gasoline"),   // Значение "Gasoline"
-        DIESEL("Diesel"),       // Значение "Diesel"
-        ELECTRIC("Electric"),   // Значение "Electric"
-        HYBRID("Hybrid");       // Значение "Hybrid"
+        GASOLINE("газ"),
+        DIESEL("дизель"),
+        ELECTRIC("электрический"),
+        HYBRID("гибрид");
 
         private final String displayName;
 
@@ -42,8 +42,8 @@ public class Offer extends BaseEntity {
     private Transmission transmission;
 
     public enum Transmission {
-        MANUAL("Manual"),       // Значение "Manual"
-        AUTOMATIC("Automatic"); // Значение "Automatic"
+        MANUAL("ручное"),
+        AUTOMATIC("автоматическое");
 
         private final String displayName;
 
