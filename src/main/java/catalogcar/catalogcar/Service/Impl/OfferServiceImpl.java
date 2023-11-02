@@ -9,6 +9,7 @@ import catalogcar.catalogcar.Service.OfferService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -28,7 +29,6 @@ public class OfferServiceImpl implements OfferService {
     public OfferDTO getOfferById(UUID id) {
         Offer offer = offerRepository.findById(id).orElse(null);
         if (offer == null) {
-
             return null;
         }
         return modelMapper.map(offer, OfferDTO.class);
@@ -46,15 +46,17 @@ public class OfferServiceImpl implements OfferService {
     public OfferDTO createOffer(OfferDTO offerDTO, UUID modelId, UUID sellerId) {
         Offer offer = modelMapper.map(offerDTO, Offer.class);
 
-
         Model model = new Model();
         model.setId(modelId);
         offer.setModel(model);
 
-
         User seller = new User();
         seller.setId(sellerId);
         offer.setSeller(seller);
+
+        offer.setCreated(LocalDateTime.now());
+        offer.setModified(LocalDateTime.now());
+        offer.setId(UUID.randomUUID());
 
         Offer savedOffer = offerRepository.save(offer);
         return modelMapper.map(savedOffer, OfferDTO.class);
@@ -64,11 +66,10 @@ public class OfferServiceImpl implements OfferService {
     public OfferDTO updateOffer(UUID id, OfferDTO offerDTO) {
         Offer existingOffer = offerRepository.findById(id).orElse(null);
         if (existingOffer == null) {
-
             return null;
         }
-
         modelMapper.map(offerDTO, existingOffer);
+        existingOffer.setModified(LocalDateTime.now());
         Offer updatedOffer = offerRepository.save(existingOffer);
         return modelMapper.map(updatedOffer, OfferDTO.class);
     }

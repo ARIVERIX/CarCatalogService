@@ -8,6 +8,7 @@ import catalogcar.catalogcar.Service.ModelService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -44,10 +45,13 @@ public class ModelServiceImpl implements ModelService {
     public ModelDTO createModel(ModelDTO modelDTO, UUID brandId) {
         Model model = modelMapper.map(modelDTO, Model.class);
 
-
         Brand brand = new Brand();
         brand.setId(brandId);
         model.setBrand(brand);
+
+        model.setCreated(LocalDateTime.now());
+        model.setModified(LocalDateTime.now());
+        model.setId(UUID.randomUUID());
 
         Model savedModel = modelRepository.save(model);
         return modelMapper.map(savedModel, ModelDTO.class);
@@ -60,6 +64,7 @@ public class ModelServiceImpl implements ModelService {
             return null;
         }
         modelMapper.map(modelDTO, existingModel);
+        existingModel.setModified(LocalDateTime.now());
         Model updatedModel = modelRepository.save(existingModel);
         return modelMapper.map(updatedModel, ModelDTO.class);
     }

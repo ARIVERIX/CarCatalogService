@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -22,18 +22,18 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable UUID id) {
         UserDTO userDTO = userService.getUserById(id);
-        return userDTO != null
-                ? ResponseEntity.ok(userDTO)
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (userDTO != null) {
+            return ResponseEntity.ok(userDTO);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<UserDTO> > getAllUsers() {
-        List<UserDTO> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+    @GetMapping("/")
+    public List<UserDTO> getAllUsers() {
+        return userService.getAllUsers();
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
         UserDTO createdUser = userService.createUser(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
@@ -42,9 +42,10 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable UUID id, @RequestBody UserDTO userDTO) {
         UserDTO updatedUser = userService.updateUser(id, userDTO);
-        return updatedUser != null
-                ? ResponseEntity.ok(updatedUser)
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (updatedUser != null) {
+            return ResponseEntity.ok(updatedUser);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

@@ -6,10 +6,10 @@ import catalogcar.catalogcar.Model.UserRole;
 import catalogcar.catalogcar.Repository.UserRepository;
 import catalogcar.catalogcar.Repository.UserRoleRepository;
 import catalogcar.catalogcar.Service.UserService;
-import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -45,11 +45,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public UserDTO createUser(UserDTO userDTO) {
         User user = modelMapper.map(userDTO, User.class);
         UserRole role = userRoleRepository.findByRole(UserRole.Role.valueOf(userDTO.getRole()));
         user.setUserRole(role);
+        user.setCreated(LocalDateTime.now());
+        user.setModified(LocalDateTime.now());
+        user.setId(UUID.randomUUID());
         User savedUser = userRepository.save(user);
         return modelMapper.map(savedUser, UserDTO.class);
     }
@@ -61,6 +63,7 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         modelMapper.map(userDTO, existingUser);
+        existingUser.setModified(LocalDateTime.now());
         User updatedUser = userRepository.save(existingUser);
         return modelMapper.map(updatedUser, UserDTO.class);
     }

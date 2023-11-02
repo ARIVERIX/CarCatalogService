@@ -7,6 +7,7 @@ import catalogcar.catalogcar.Service.BrandService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -42,6 +43,9 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public BrandDTO createBrand(BrandDTO brandDTO) {
         Brand brand = modelMapper.map(brandDTO, Brand.class);
+        brand.setCreated(LocalDateTime.now());
+        brand.setModified(LocalDateTime.now());
+        brand.setId(UUID.randomUUID());
         Brand savedBrand = brandRepository.save(brand);
         return modelMapper.map(savedBrand, BrandDTO.class);
     }
@@ -53,6 +57,7 @@ public class BrandServiceImpl implements BrandService {
             return null;
         }
         modelMapper.map(brandDTO, existingBrand);
+        existingBrand.setModified(LocalDateTime.now());
         Brand updatedBrand = brandRepository.save(existingBrand);
         return modelMapper.map(updatedBrand, BrandDTO.class);
     }

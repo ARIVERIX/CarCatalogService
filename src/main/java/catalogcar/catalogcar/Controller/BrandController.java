@@ -1,6 +1,5 @@
 package catalogcar.catalogcar.Controller;
 
-
 import catalogcar.catalogcar.DTO.BrandDTO;
 import catalogcar.catalogcar.Service.BrandService;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/brands")
+@RequestMapping("/brands")
 public class BrandController {
 
     private final BrandService brandService;
@@ -23,34 +22,34 @@ public class BrandController {
     @GetMapping("/{id}")
     public ResponseEntity<BrandDTO> getBrandById(@PathVariable UUID id) {
         BrandDTO brandDTO = brandService.getBrandById(id);
-        return brandDTO != null
-                ? ResponseEntity.ok(brandDTO)
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (brandDTO != null) {
+            return new ResponseEntity<>(brandDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<BrandDTO>> getAllBrands() {
-        List<BrandDTO> brands = brandService.getAllBrands();
-        return ResponseEntity.ok(brands);
+        List<BrandDTO> brandDTOs = brandService.getAllBrands();
+        return new ResponseEntity<>(brandDTOs, HttpStatus.OK);
     }
-
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<BrandDTO> createBrand(@RequestBody BrandDTO brandDTO) {
         BrandDTO createdBrand = brandService.createBrand(brandDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdBrand);
+        return new ResponseEntity<>(createdBrand, HttpStatus.CREATED);
     }
-
     @PutMapping("/{id}")
     public ResponseEntity<BrandDTO> updateBrand(@PathVariable UUID id, @RequestBody BrandDTO brandDTO) {
         BrandDTO updatedBrand = brandService.updateBrand(id, brandDTO);
-        return updatedBrand != null
-                ? ResponseEntity.ok(updatedBrand)
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (updatedBrand != null) {
+            return new ResponseEntity<>(updatedBrand, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBrand(@PathVariable UUID id) {
         brandService.deleteBrand(id);
-        return ResponseEntity.noContent().build();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

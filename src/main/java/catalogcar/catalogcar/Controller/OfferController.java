@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/offers")
+@RequestMapping("/offers")
 public class OfferController {
 
     private final OfferService offerService;
@@ -22,19 +22,19 @@ public class OfferController {
     @GetMapping("/{id}")
     public ResponseEntity<OfferDTO> getOfferById(@PathVariable UUID id) {
         OfferDTO offerDTO = offerService.getOfferById(id);
-        return offerDTO != null
-                ? ResponseEntity.ok(offerDTO)
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (offerDTO != null) {
+            return ResponseEntity.ok(offerDTO);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<OfferDTO>> getAllOffers() {
-        List<OfferDTO> offers = offerService.getAllOffers();
-        return ResponseEntity.ok(offers);
+    @GetMapping("/")
+    public List<OfferDTO> getAllOffers() {
+        return offerService.getAllOffers();
     }
 
     @PostMapping("/{modelId}/{sellerId}")
-    public ResponseEntity<OfferDTO> createOffer(@PathVariable UUID modelId, @PathVariable UUID sellerId, @RequestBody OfferDTO offerDTO) {
+    public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO, @PathVariable UUID modelId, @PathVariable UUID sellerId) {
         OfferDTO createdOffer = offerService.createOffer(offerDTO, modelId, sellerId);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOffer);
     }
@@ -42,9 +42,10 @@ public class OfferController {
     @PutMapping("/{id}")
     public ResponseEntity<OfferDTO> updateOffer(@PathVariable UUID id, @RequestBody OfferDTO offerDTO) {
         OfferDTO updatedOffer = offerService.updateOffer(id, offerDTO);
-        return updatedOffer != null
-                ? ResponseEntity.ok(updatedOffer)
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (updatedOffer != null) {
+            return ResponseEntity.ok(updatedOffer);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

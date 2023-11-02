@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/models")
+@RequestMapping("/models")
 public class ModelController {
 
     private final ModelService modelService;
@@ -22,19 +22,19 @@ public class ModelController {
     @GetMapping("/{id}")
     public ResponseEntity<ModelDTO> getModelById(@PathVariable UUID id) {
         ModelDTO modelDTO = modelService.getModelById(id);
-        return modelDTO != null
-                ? ResponseEntity.ok(modelDTO)
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (modelDTO != null) {
+            return ResponseEntity.ok(modelDTO);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<ModelDTO>> getAllModels() {
-        List<ModelDTO> models = modelService.getAllModels();
-        return ResponseEntity.ok(models);
+    @GetMapping("/")
+    public List<ModelDTO> getAllModels() {
+        return modelService.getAllModels();
     }
 
     @PostMapping("/{brandId}")
-    public ResponseEntity<ModelDTO> createModel(@PathVariable UUID brandId, @RequestBody ModelDTO modelDTO) {
+    public ResponseEntity<ModelDTO> createModel(@RequestBody ModelDTO modelDTO, @PathVariable UUID brandId) {
         ModelDTO createdModel = modelService.createModel(modelDTO, brandId);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdModel);
     }
@@ -42,9 +42,10 @@ public class ModelController {
     @PutMapping("/{id}")
     public ResponseEntity<ModelDTO> updateModel(@PathVariable UUID id, @RequestBody ModelDTO modelDTO) {
         ModelDTO updatedModel = modelService.updateModel(id, modelDTO);
-        return updatedModel != null
-                ? ResponseEntity.ok(updatedModel)
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (updatedModel != null) {
+            return ResponseEntity.ok(updatedModel);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

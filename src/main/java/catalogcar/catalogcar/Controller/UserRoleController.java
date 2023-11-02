@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/user-roles")
+@RequestMapping("/user-roles")
 public class UserRoleController {
 
     private final UserRoleService userRoleService;
@@ -22,18 +22,18 @@ public class UserRoleController {
     @GetMapping("/{id}")
     public ResponseEntity<UserRoleDTO> getUserRoleById(@PathVariable UUID id) {
         UserRoleDTO userRoleDTO = userRoleService.getUserRoleById(id);
-        return userRoleDTO != null
-                ? ResponseEntity.ok(userRoleDTO)
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (userRoleDTO != null) {
+            return ResponseEntity.ok(userRoleDTO);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<UserRoleDTO>> getAllUserRoles() {
-        List<UserRoleDTO> userRoles = userRoleService.getAllUserRoles();
-        return ResponseEntity.ok(userRoles);
+    @GetMapping("/")
+    public List<UserRoleDTO> getAllUserRoles() {
+        return userRoleService.getAllUserRoles();
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<UserRoleDTO> createUserRole(@RequestBody UserRoleDTO userRoleDTO) {
         UserRoleDTO createdUserRole = userRoleService.createUserRole(userRoleDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUserRole);
@@ -42,9 +42,10 @@ public class UserRoleController {
     @PutMapping("/{id}")
     public ResponseEntity<UserRoleDTO> updateUserRole(@PathVariable UUID id, @RequestBody UserRoleDTO userRoleDTO) {
         UserRoleDTO updatedUserRole = userRoleService.updateUserRole(id, userRoleDTO);
-        return updatedUserRole != null
-                ? ResponseEntity.ok(updatedUserRole)
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (updatedUserRole != null) {
+            return ResponseEntity.ok(updatedUserRole);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
