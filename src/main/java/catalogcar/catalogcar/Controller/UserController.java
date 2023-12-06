@@ -2,6 +2,7 @@ package catalogcar.catalogcar.Controller;
 
 import catalogcar.catalogcar.DTO.UserDTO;
 import catalogcar.catalogcar.Service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +14,11 @@ import java.util.UUID;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
+    private  UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @Autowired
+    public void setUsersService(UserService usersService) {
+        this.userService = usersService;
     }
 
     @GetMapping("/{id}")

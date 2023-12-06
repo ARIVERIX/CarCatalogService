@@ -5,6 +5,7 @@ import catalogcar.catalogcar.Model.UserRole;
 import catalogcar.catalogcar.Repository.UserRoleRepository;
 import catalogcar.catalogcar.Service.UserRoleService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,11 +15,15 @@ import java.util.stream.Collectors;
 @Service
 public class UserRoleServiceImpl implements UserRoleService {
 
-    private final UserRoleRepository userRoleRepository;
-    private final ModelMapper modelMapper;
+    private  UserRoleRepository userRoleRepository;
+    private  ModelMapper modelMapper;
 
-    public UserRoleServiceImpl(UserRoleRepository userRoleRepository, ModelMapper modelMapper) {
-        this.userRoleRepository = userRoleRepository;
+    @Autowired
+    public void setRolesRepository(UserRoleRepository rolesRepository){
+        this.userRoleRepository = rolesRepository;
+    }
+    @Autowired
+    public void setModelMapper(ModelMapper modelMapper){
         this.modelMapper = modelMapper;
     }
 

@@ -7,6 +7,7 @@ import catalogcar.catalogcar.Model.User;
 import catalogcar.catalogcar.Repository.OfferRepository;
 import catalogcar.catalogcar.Service.OfferService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,8 +18,16 @@ import java.util.stream.Collectors;
 @Service
 public class OfferServiceImpl implements OfferService {
 
-    private final OfferRepository offerRepository;
-    private final ModelMapper modelMapper;
+    private  OfferRepository offerRepository;
+    private  ModelMapper modelMapper;
+    @Autowired
+    public void setOffersRepository(OfferRepository offersRepository){
+        this.offerRepository = offersRepository;
+    }
+    @Autowired
+    public void setModelMapper(ModelMapper modelMapper){
+        this.modelMapper = modelMapper;
+    }
 
     public OfferServiceImpl(OfferRepository offerRepository, ModelMapper modelMapper) {
         this.offerRepository = offerRepository;

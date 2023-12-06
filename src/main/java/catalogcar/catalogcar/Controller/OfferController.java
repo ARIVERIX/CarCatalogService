@@ -1,7 +1,9 @@
 package catalogcar.catalogcar.Controller;
 
 import catalogcar.catalogcar.DTO.OfferDTO;
+import catalogcar.catalogcar.Model.Offer;
 import catalogcar.catalogcar.Service.OfferService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +15,11 @@ import java.util.UUID;
 @RequestMapping("/offers")
 public class OfferController {
 
-    private final OfferService offerService;
+    private  OfferService offerService;
 
-    public OfferController(OfferService offerService) {
-        this.offerService = offerService;
+    @Autowired
+    public void setOffersService(OfferService offersService) {
+        this.offerService = offersService;
     }
 
     @GetMapping("/{id}")

@@ -6,6 +6,7 @@ import catalogcar.catalogcar.Model.Model;
 import catalogcar.catalogcar.Repository.ModelRepository;
 import catalogcar.catalogcar.Service.ModelService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,11 +17,15 @@ import java.util.stream.Collectors;
 @Service
 public class ModelServiceImpl implements ModelService {
 
-    private final ModelRepository modelRepository;
-    private final ModelMapper modelMapper;
+    private  ModelRepository modelRepository;
+    private  ModelMapper modelMapper;
 
-    public ModelServiceImpl(ModelRepository modelRepository, ModelMapper modelMapper) {
-        this.modelRepository = modelRepository;
+    @Autowired
+    public void setModelsRepository(ModelRepository modelsRepository){
+        this.modelRepository = modelsRepository;
+    }
+    @Autowired
+    public void setModelMapper(ModelMapper modelMapper){
         this.modelMapper = modelMapper;
     }
 

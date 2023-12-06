@@ -7,6 +7,7 @@ import catalogcar.catalogcar.Repository.UserRepository;
 import catalogcar.catalogcar.Repository.UserRoleRepository;
 import catalogcar.catalogcar.Service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,9 +18,21 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
-    private final UserRoleRepository userRoleRepository;
+    private  UserRepository userRepository;
+    private  ModelMapper modelMapper;
+    private  UserRoleRepository userRoleRepository;
+    @Autowired
+    public void setUsersRepository(UserRepository usersRepository){
+        this.userRepository = usersRepository;
+    }
+    @Autowired
+    public void setRolesRepository(UserRoleRepository roleRepository){
+        this.userRoleRepository = roleRepository;
+    }
+    @Autowired
+    public void setModelMapper(ModelMapper modelMapper){
+        this.modelMapper = modelMapper;
+    }
 
     public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, UserRoleRepository userRoleRepository) {
         this.userRepository = userRepository;

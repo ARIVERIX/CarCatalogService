@@ -2,6 +2,7 @@ package catalogcar.catalogcar.Controller;
 
 import catalogcar.catalogcar.DTO.UserRoleDTO;
 import catalogcar.catalogcar.Service.UserRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,12 @@ import java.util.UUID;
 @RequestMapping("/user-roles")
 public class UserRoleController {
 
-    private final UserRoleService userRoleService;
+    private  UserRoleService userRoleService;
+
+    @Autowired
+    public void setRolesService(UserRoleService rolesService) {
+        this.userRoleService = rolesService;
+    }
 
     public UserRoleController(UserRoleService userRoleService) {
         this.userRoleService = userRoleService;

@@ -2,6 +2,7 @@ package catalogcar.catalogcar.Controller;
 
 import catalogcar.catalogcar.DTO.ModelDTO;
 import catalogcar.catalogcar.Service.ModelService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +14,11 @@ import java.util.UUID;
 @RequestMapping("/models")
 public class ModelController {
 
-    private final ModelService modelService;
+    private  ModelService modelService;
 
-    public ModelController(ModelService modelService) {
-        this.modelService = modelService;
+    @Autowired
+    public void setModelsService(ModelService modelsService) {
+        this.modelService = modelsService;
     }
 
     @GetMapping("/{id}")
