@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}"/>
+<body class="d-flex flex-column h-100">
+<div th:replace="~{fragments/navbar}">Navbar</div>
+<main class="flex-shrink-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
+                <div class="justify-content-center">
+                    <h1>Add User</h1>
+                </div>
+                <form th:action="@{/users/add}"
+                      th:method="post"
+                      th:object="${userModel}"
+                      class="m-md-auto w-50 pb-3">
+                    <!--is_active-->
+                    <div class="mb-3">
+                        <label class="form-label" for="is_active">Is Active</label>
+                        <input th:field="*{is_active}" type="checkbox" class="form-check-input" id="is_active" name="is_active"/>
+                        <small th:if="${#fields.hasErrors('is_active')}" th:errors="*{is_active}" class="text-danger">Error message</small>
+                    </div>
+
+                    <!--first_name-->
+                    <div class="mb-3">
+                        <label class="form-label" for="first_name">Имя</label>
+                        <input th:field="*{first_name}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control text-center" id="first_name" aria-describedby="firstNameHelp"
+                               name="first_name"/>
+                        <small th:if="${#fields.hasErrors('first_name')}" th:errors="*{first_name}" class="text-danger">Error message</small>
+                    </div>
+                    <!--last_name-->
+                    <div class="mb-3">
+                        <label class="form-label" for="last_name">Фамилия</label>
+                        <input th:field="*{last_name}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control text-center" id="last_name" aria-describedby="lastNameHelp"
+                               name="last_name"/>
+                        <small th:if="${#fields.hasErrors('last_name')}" th:errors="*{last_name}" class="text-danger">Error message</small>
+                    </div>
+
+                    <!--email-->
+                    <div class="mb-3">
+                        <label class="form-label" for="email">Email</label>
+                        <input th:field="*{email}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control text-center" id="email" aria-describedby="emailHelp"
+                               name="email"/>
+                        <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger">Error message</small>
+                    </div>
+
+                    <!--password-->
+                    <div class="mb-3">
+                        <label class="form-label" for="password">Пароль</label>
+                        <input th:field="*{password}"
+                               th:errorclass="is-invalid"
+                               type="password" class="form-control text-center" id="password" aria-describedby="passwordHelp"
+                               name="password"/>
+                        <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger">Error message</small>
+                    </div>
+
+                    <!--username-->
+                    <div class="mb-3">
+                        <label class="form-label" for="username">Username</label>
+                        <input th:field="*{username}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control text-center" id="username" aria-describedby="usernameHelp"
+                               name="username"/>
+                        <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger">Error message</small>
+                    </div>
+
+                    <!--role-->
+                    <div class="mb-3">
+                        <label class="form-label" for="role">Уровень допуска</label>
+                        <select th:field="*{role}" class="form-select text-center" id="role" aria-describedby="roleHelp" name="role">
+                            <option th:each="cat : ${T(catalogcar.catalogcar.Model.UserRole.Role).values()}" th:value="${cat}" th:text="${cat.name()}"></option>
+                        </select>
+                        <small th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="text-danger">Error message</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary">Добавить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragments/footer}"/>
+</body>
+</html>

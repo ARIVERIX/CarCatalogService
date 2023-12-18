@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body class="d-flex flex-column h-100">
+<div th:replace="fragments/navbar">Navbar</div>
+<main class="flex-shrink-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
+                <div class="justify-content-center">
+                    <h1>Add Offer</h1>
+                </div>
+                <form th:action="@{/offers/add}"
+                      th:method="post"
+                      th:object="${offerModel}"
+                      class="m-md-auto w-50 pb-3">
+                    <!-- description -->
+                    <div class="mb-3">
+                        <label class="form-label" for="description">Описание</label>
+                        <input th:field="*{description}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control text-center" id="description" aria-describedby="descriptionHelp"
+                               name="description"/>
+                        <small th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger">Error message</small>
+                    </div>
+
+                    <!-- engine -->
+                    <div class="mb-3">
+                        <label class="form-label" for="engine">Двигатель</label>
+                        <select th:field="*{engine}" class="form-select text-center" id="engine" aria-describedby="engineHelp" name="engine">
+                            <option th:each="engine : ${T(catalogcar.catalogcar.Model.Offer.Engine).values()}" th:value="${engine}" th:text="${engine.name()}"></option>
+                        </select>
+                        <small th:if="${#fields.hasErrors('engine')}" th:errors="*{engine}" class="text-danger">Error message</small>
+                    </div>
+                    <!-- imageUrl -->
+                    <div class="mb-3">
+                        <label class="form-label" for="imageUrl">URL изображения</label>
+                        <input th:field="*{imageUrl}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control text-center" id="imageUrl" aria-describedby="imageUrlHelp"
+                               name="imageUrl"/>
+                        <small th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}" class="text-danger">Error message</small>
+                    </div>
+
+                    <!-- mileage -->
+                    <div class="mb-3">
+                        <label class="form-label" for="mileage">Пробег</label>
+                        <input th:field="*{mileage}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control text-center" id="mileage" aria-describedby="mileageHelp"
+                               name="mileage"/>
+                        <small th:if="${#fields.hasErrors('mileage')}" th:errors="*{mileage}" class="text-danger">Error message</small>
+                    </div>
+                    <!-- price -->
+                    <div class="mb-3">
+                        <label class="form-label" for="price">Цена</label>
+                        <input th:field="*{price}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control text-center" id="price" aria-describedby="priceHelp"
+                               name="price"/>
+                        <small th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-danger">Error message</small>
+                    </div>
+
+                    <!-- transmission -->
+                    <div class="mb-3">
+                        <label class="form-label" for="transmission">Передача</label>
+                        <select th:field="*{transmission}" class="form-select text-center" id="transmission" aria-describedby="transmissionHelp" name="transmission">
+                            <option th:each="transmission : ${T(catalogcar.catalogcar.Model.Offer.Transmission).values()}" th:value="${transmission}" th:text="${transmission.name()}"></option>
+                        </select>
+                        <small th:if="${#fields.hasErrors('transmission')}" th:errors="*{transmission}" class="text-danger">Error message</small>
+                    </div>
+
+                    <!-- year -->
+                    <div class="mb-3">
+                        <label class="form-label" for="year">Год</label>
+                        <select th:field="*{year}" class="form-select text-center" id="year" aria-describedby="yearHelp" name="year">
+                            <option th:each="year : ${#numbers.sequence(1900, 2023)}" th:value="${year}" th:text="${year}"></option>
+                        </select>
+                        <small th:if="${#fields.hasErrors('year')}" th:errors="*{year}" class="text-danger">Error message</small>
+                    </div>
+
+
+                    <!-- model_id -->
+                    <div class="mb-3">
+                        <label class="form-label" for="model_id">ID модели</label>
+                        <input th:field="*{model_id}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control text-center" id="model_id" aria-describedby="modelIdHelp"
+                               name="model_id"/>
+                        <small th:if="${#fields.hasErrors('model_id')}" th:errors="*{model_id}" class="text-danger">Error message</small>
+                    </div>
+                    <!-- seller_id -->
+                    <div class="mb-3">
+                        <label class="form-label" for="seller_id">ID покупателя</label>
+                        <input th:field="*{seller_id}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control text-center" id="seller_id" aria-describedby="sellerIdHelp"
+                               name="seller_id"/>
+                        <small th:if="${#fields.hasErrors('seller_id')}" th:errors="*{seller_id}" class="text-danger">Error message</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary">Добавить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>

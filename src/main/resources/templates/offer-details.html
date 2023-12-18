@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body class="d-flex flex-column h-100">
+<div th:replace="fragments/navbar">Navbar</div>
+<main class="flex-shrink-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <main class="jumbotron text-center rounded col-md-12 align-self-center pt-5">
+                <div class="justify-content-center">
+                    <h1>Offers Details</h1>
+                </div>
+                <div class="row bg-light rounded">
+                    <div class="col-md-6"><img src="/pic/pngwing.com (3).png" height="350px"></div>
+                    <div class="col-md-6 pt-3">
+                        <h2>Offer:</h2>
+                        <h4 th:text="'Engine: ' + ${offersDetails.engine.getName()}"></h4>
+                        <h4 th:text="'Transmission: ' + ${offersDetails.transmission.getName()}"></h4>
+<!--                        <h4 th:text="'URL изображения: ' + ${offersDetails.imageUrl}"></h4>-->
+                        <h4 th:text="'Пробег: ' + ${offersDetails.mileage}"></h4>
+                        <h4 th:text="'Цена: ' + ${offersDetails.price}"></h4>
+                        <h4 th:text="'Дата: ' + ${offersDetails.year}"></h4>
+                        <h4 th:text="'Описание: ' + ${offersDetails.description}"></h4>
+                        <h4 th:text="'Дата создания: ' + ${#dates.format(offersDetails.created, 'yyyy-MM-dd HH:mm:ss')}"></h4>
+                        <div class="align-bottom"><a class="btn btn-danger align-bottom" th:href="@{/offers/offer-delete/{offer-description}(offer-description=${offersDetails.description})}">Delete offer</a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</main>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>

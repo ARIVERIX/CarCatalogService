@@ -1,58 +1,66 @@
 package catalogcar.catalogcar.Controller;
 
-import catalogcar.catalogcar.DTO.UserDTO;
-import catalogcar.catalogcar.Service.UserService;
+import catalogcar.catalogcar.DTO.AddUsersDto;
+import catalogcar.catalogcar.Service.NewUsersServices;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.UUID;
-
-@RestController
+@Controller
 @RequestMapping("/users")
 public class UserController {
-
-    private  UserService userService;
-
     @Autowired
-    public void setUsersService(UserService usersService) {
-        this.userService = usersService;
+    private final NewUsersServices newUsersServices;
+
+    public UserController(NewUsersServices newUsersServices) {
+        this.newUsersServices = newUsersServices;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable UUID id) {
-        UserDTO userDTO = userService.getUserById(id);
-        if (userDTO != null) {
-            return ResponseEntity.ok(userDTO);
+    @ModelAttribute("userModel")
+    public AddUsersDto initUser(){
+        return new AddUsersDto();
+    }
+
+    @GetMapping("/add")
+    public String addUser(){
+        return "user-add";
+    }
+
+    @PostMapping("/add")
+    public String addUser(@Valid AddUsersDto userModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("userModel", userModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userModel", bindingResult);
+            return "redirect:/users/add";
         }
-        return ResponseEntity.notFound().build();
+        newUsersServices.addUsers(userModel);
+
+        System.out.println("Email: " + userModel.getEmail());
+        System.out.println("Password: " + userModel.getPassword());
+
+        return "redirect:/";
     }
 
-    @GetMapping("/")
-    public List<UserDTO> getAllUsers() {
-        return userService.getAllUsers();
+    @GetMapping("/all")
+    public String showAllUsers(Model model){
+        model.addAttribute("UserInfo", newUsersServices.allUsers());
+        return  "user-all";
     }
 
-    @PostMapping("/")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
-        UserDTO createdUser = userService.createUser(userDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    @GetMapping("/user-details/{user-name}")
+    public  String userDetails(@PathVariable("user-name") String email, Model model){
+        model.addAttribute("usersDetails", newUsersServices.usersDetails(email));
+        return "user-details";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable UUID id, @RequestBody UserDTO userDTO) {
-        UserDTO updatedUser = userService.updateUser(id, userDTO);
-        if (updatedUser != null) {
-            return ResponseEntity.ok(updatedUser);
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/user-delete/{user-email}")
+    public String deleteUser(@PathVariable("user-email") String email){
+        newUsersServices.removeUser(email);
+        return "redirect:/users/all";
     }
 }

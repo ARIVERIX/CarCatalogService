@@ -1,59 +1,67 @@
 package catalogcar.catalogcar.Controller;
 
-import catalogcar.catalogcar.DTO.OfferDTO;
-import catalogcar.catalogcar.Model.Offer;
-import catalogcar.catalogcar.Service.OfferService;
+
+import catalogcar.catalogcar.DTO.AddOffersDto;
+import catalogcar.catalogcar.Service.NewOffersServices;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.UUID;
 
-@RestController
+@Controller
 @RequestMapping("/offers")
 public class OfferController {
-
-    private  OfferService offerService;
-
     @Autowired
-    public void setOffersService(OfferService offersService) {
-        this.offerService = offersService;
+    private final NewOffersServices newOffersServices;
+
+    public OfferController(NewOffersServices newOffersServices) {
+        this.newOffersServices = newOffersServices;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<OfferDTO> getOfferById(@PathVariable UUID id) {
-        OfferDTO offerDTO = offerService.getOfferById(id);
-        if (offerDTO != null) {
-            return ResponseEntity.ok(offerDTO);
+
+    @ModelAttribute("offerModel")
+    public AddOffersDto initOffer(){
+        return new AddOffersDto();
+    }
+
+    @GetMapping("/add")
+    public String addOffer(){
+        return "offer-add";
+    }
+
+    @PostMapping("/add")
+    public String addOffer(@Valid AddOffersDto offerModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("offerModel", offerModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.offerModel", bindingResult);
+            return "redirect:/offers/add";
         }
-        return ResponseEntity.notFound().build();
+        newOffersServices.addOffer(offerModel);
+
+        return "redirect:/";
     }
 
-    @GetMapping("/")
-    public List<OfferDTO> getAllOffers() {
-        return offerService.getAllOffers();
+    @GetMapping("/all")
+    public String showAllOffers(Model model){
+        model.addAttribute("OfferInfo", newOffersServices.allOffers());
+        return  "offer-all";
     }
 
-    @PostMapping("/{modelId}/{sellerId}")
-    public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO, @PathVariable UUID modelId, @PathVariable UUID sellerId) {
-        OfferDTO createdOffer = offerService.createOffer(offerDTO, modelId, sellerId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdOffer);
+    @GetMapping("/offer-details/{offer-description}")
+    public  String offerDetails(@PathVariable("offer-description") String description, Model model){
+        model.addAttribute("offersDetails", newOffersServices.offersDetails(description));
+        return "offer-details";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<OfferDTO> updateOffer(@PathVariable UUID id, @RequestBody OfferDTO offerDTO) {
-        OfferDTO updatedOffer = offerService.updateOffer(id, offerDTO);
-        if (updatedOffer != null) {
-            return ResponseEntity.ok(updatedOffer);
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOffer(@PathVariable UUID id) {
-        offerService.deleteOffer(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/offer-delete/{offer-description}")
+    public String deleteOffer(@PathVariable("offer-description") String description){
+        newOffersServices.removeOffer(description);
+        return "redirect:/offers/all";
     }
 }

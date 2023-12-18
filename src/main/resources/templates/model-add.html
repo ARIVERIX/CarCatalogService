@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body class="d-flex flex-column h-100">
+<div th:replace="fragments/navbar">Navbar</div>
+<main class="flex-shrink-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
+        <div class="justify-content-center">
+          <h1>Add Model</h1>
+        </div>
+          <form th:action="@{/models/add}" th:method="post" th:object="${modelModel}" class="m-md-auto w-50 pb-3">
+<!--name-->
+            <div class="mb-3">
+                <label class="form-label" for="name">Название</label>
+                <input th:field="*{name}"
+                       th:errorclass="is-invalid"
+                       type="text" class="form-control text-center" id="name" aria-describedby="nameHelp"
+                       name="name"/>
+                <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">Error message</small>
+            </div>
+<!--category-->
+            <div class="mb-3">
+                <label class="form-label" for="category">Категория</label>
+                <select th:field="*{category}" class="form-select text-center" id="category" aria-describedby="categoryHelp" name="category">
+                    <option th:each="cat : ${T(catalogcar.catalogcar.Model.Model.Category).values()}" th:value="${cat}" th:text="${cat.name()}"></option>
+                </select>
+                <small th:if="${#fields.hasErrors('category')}" th:errors="*{category}" class="text-danger">Error message</small>
+            </div>
+
+<!-- start_year -->
+              <div class="mb-3">
+                  <label class="form-label" for="start_year">Начало производства(Год)</label>
+                  <select th:field="*{start_year}" class="form-select text-center" id="start_year" aria-describedby="startYearHelp" name="start_year">
+                      <option th:each="year : ${#numbers.sequence(1768, 2023)}" th:value="${year}" th:text="${year}"></option>
+                  </select>
+                  <small th:if="${#fields.hasErrors('start_year')}" th:errors="*{start_year}" class="text-danger">Error message</small>
+              </div>
+
+<!-- end_year -->
+              <div class="mb-3">
+                  <label class="form-label" for="end_year">Год выпуска</label>
+                  <select th:field="*{end_year}" class="form-select text-center" id="end_year" aria-describedby="endYearHelp" name="end_year">
+                      <option th:each="year : ${#numbers.sequence(1768, 2023)}" th:value="${year}" th:text="${year}"></option>
+                  </select>
+                  <small th:if="${#fields.hasErrors('end_year')}" th:errors="*{end_year}" class="text-danger">Error message</small>
+              </div>
+
+<!-- image_url -->
+            <div class="mb-3">
+                <label class="form-label" for="image_url">URL изображения</label>
+                <input th:field="*{image_url}"
+                       th:errorclass="is-invalid"
+                       type="text" class="form-control text-center" id="image_url" aria-describedby="imageUrlHelp"
+                       name="image_url"/>
+                <small th:if="${#fields.hasErrors('image_url')}" th:errors="*{image_url}" class="text-danger">Error message</small>
+            </div>
+
+<!-- brand_id -->
+            <div class="mb-3">
+                <label class="form-label" for="brand_id">ID бренда</label>
+                <input th:field="*{brand_id}"
+                       th:errorclass="is-invalid"
+                       type="text" class="form-control text-center" id="brand_id" aria-describedby="brandIdHelp"
+                       name="brand_id"/>
+                <small th:if="${#fields.hasErrors('brand_id')}" th:errors="*{brand_id}" class="text-danger">Error message</small>
+            </div>
+
+          <button type="submit" class="btn btn-secondary">Добавить</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>

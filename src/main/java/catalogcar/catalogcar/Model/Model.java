@@ -1,5 +1,6 @@
 package catalogcar.catalogcar.Model;
 
+import catalogcar.catalogcar.DTO.BrandDTO;
 import catalogcar.catalogcar.Model.Brand;
 import catalogcar.catalogcar.Model.Offer;
 import jakarta.persistence.*;
@@ -14,6 +15,9 @@ public class Model extends BaseEntity {
 
     @Enumerated(EnumType.STRING) // Указываем, что хотим хранить значение как строку
     private Category category;
+
+    public void addAttribute(String brands, List<BrandDTO> brandDTOs) {
+    }
 
     public enum Category {
         CAR("машина"),
@@ -42,4 +46,6 @@ public class Model extends BaseEntity {
 
     @OneToMany(mappedBy = "model")
     private List<Offer> offers;
+    public void setBrand_id(int id) {
+    }
 }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body class="d-flex flex-column h-100">
+<div th:replace="fragments/navbar">Navbar</div>
+<main class="flex-shrink-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <main class="jumbotron text-center rounded col-md-12 align-self-center pt-5">
+        <div class="justify-content-center">
+          <h1>Users Details</h1>
+        </div>
+        <div class="row bg-light rounded">
+          <div class="col-md-6"><img src="/pic/pngwing.com (1).png" height="350px"></div>
+          <div class="col-md-6 pt-3">
+            <h2>User:</h2>
+            <h4 th:text="'FCs: ' + ${usersDetails.first_name} + ' ' + ${usersDetails.last_name}"></h4>
+            <h4 th:text="'Role: ' + ${usersDetails.role.getName()}"></h4>
+            <h4 th:text="'Email: ' + ${usersDetails.email}"></h4>
+            <h4 th:text="'Is_active: ' + ${usersDetails.is_active}"></h4>
+            <h4 th:text="'Username: ' + ${usersDetails.username}"></h4>
+            <h4 th:text="'Created: ' + ${#dates.format(usersDetails.created, 'yyyy-MM-dd HH:mm:ss')}"></h4>
+            <h4 th:text="'Modified: ' + ${#dates.format(usersDetails.modified, 'yyyy-MM-dd HH:mm:ss')}"></h4>
+            <div class="align-bottom"><a class="btn btn-danger align-bottom" th:href="@{/users/user-delete/{user-email}(user-email=${usersDetails.email})}">Delete user</a>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</main>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>
